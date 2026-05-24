@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "585124897305",
+    "firebase_url": "https://appmatematicadv-default-rtdb.firebaseio.com",
+    "project_id": "appmatematicadv",
+    "storage_bucket": "appmatematicadv.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585124897305:android:48fe673d3bad4eaffb0088",
+        "android_client_info": {
+          "package_name": "com.pe.appmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585124897305-43k8hirfpj92p0vq97tmk5vqifg0c07u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pe.appmobile",
+            "certificate_hash": "1e92177849d54ebdeca011c93962e452c542fc39"
+          }
+        },
+        {
+          "client_id": "585124897305-s56dqf3h8cebtqr4ho8jac9n40298v24.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI9c8tuDHkYjtYxlmAO7s_9TXN2CdbQDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585124897305-s56dqf3h8cebtqr4ho8jac9n40298v24.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
