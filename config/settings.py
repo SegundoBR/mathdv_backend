@@ -31,6 +31,7 @@ env = environ.Env(
     ACCESS_TOKEN_LIFETIME_MINUTES=(int, 60),
     REFRESH_TOKEN_LIFETIME_DAYS=(int, 7),
     FIREBASE_CREDENTIALS_PATH=(str, "firebase.json"),
+    FIREBASE_CREDENTIALS_JSON=(str, ""),
     SECURE_SSL_REDIRECT=(bool, False),
     SESSION_COOKIE_SECURE=(bool, False),
     CSRF_COOKIE_SECURE=(bool, False),
@@ -261,7 +262,16 @@ if secure_proxy_ssl_header:
 # ---------------------------------------------------------------------------
 
 FIREBASE_CREDENTIALS_PATH = BASE_DIR / env("FIREBASE_CREDENTIALS_PATH")
+FIREBASE_CREDENTIALS_JSON = env("FIREBASE_CREDENTIALS_JSON")
 
+if FIREBASE_CREDENTIALS_JSON:
+    # En producción (Render): Pasamos el string de texto para que el SDK de Firebase lo parsee directamente
+    import json
+    FIREBASE_CREDENTIALS = json.loads(FIREBASE_CREDENTIALS_JSON)
+else:
+    # En desarrollo local: Usamos el archivo físico firebase.json que tienes en tu PC
+    FIREBASE_CREDENTIALS_PATH = BASE_DIR / env("FIREBASE_CREDENTIALS_PATH")
+    FIREBASE_CREDENTIALS = str(FIREBASE_CREDENTIALS_PATH)
 # ---------------------------------------------------------------------------
 # Logging
 # ---------------------------------------------------------------------------
