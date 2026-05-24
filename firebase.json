@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "appmatematicadv",
+  "private_key_id": "8e26f203d34ae0f9f5529d6918d5c97992edd910",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5Kho7ur2sBepP\nUKYuO7S9yB017fEZwbWVuKFUlFJ23oUEciDYFqVGwY1h1F5XC17G/rO6nzrmOf9N\nErgKkM+GkaKy4kzabjcoju9p8Kb6gIhSj3wVOr5f2/8sGrCXD7BH+tOWGpDa8PQr\nZjqP18T7kqPGblyJzU4E708MoHj9WebQ0kZhMM8H8pvFwd9JXNsGUlZ6WpuGX9cU\nPvvrXb/Oj0FWLclEYhHXO1Sb6D+paiOpoHB3iuYgfG+8NnziP/2GVHWquP0JIngP\n4ZMWEDlIrdtQay7lmoEvoVfy0z7U3kod7XUEgyO695djgQpBAOLmpW17iTybvxsm\nF55r7QZfAgMBAAECggEASpYSESNMyeFsG9zxw8fbK2NTmOiq6OQloBTKL8a7XRSP\nYlYSstiUZOcMa27fPZLf76qjfTYsxJZyJ3q11dO1NJCvh/0uVgJ1h4nkGLmOmXNy\n9kbEBc0u6HA23m412fPA343C80DqPrc2s9CvIEgbGfdcr06/SecAWW6IWh69/dcs\ndr2WB8neoSLxrfkk2xQo9OpCGCl4UHWmXzoLKIqvFqMbnMyFhLrf8Xi4brZrRgbw\ntTbEjlH3ObLptsX1ga1mmRD4inxYPudiuJrjJ1qh+zf3e8Iih8E02UHagiDMNnYn\nb5LXoywNLbJTYDq9inklAoxj7r+DICvfb74NlfXAaQKBgQDezX3EnzyfgKJM33Uk\njw5Q1cElRicUuX1fywePZHUigeV2g0sQnQiXP7jjYU1j+wOHANdtTJZrirDjGHZ1\nDm+grlX5OtsISLaq4XHBVkUdDfyG9ZCc/Wy0vSy6VnFjYvcbn741z7v690ziVBVj\nM/gFd8j5PMl0D3ZBxTTpCuzVqwKBgQDUwPOLoDo8M/MoSR4HWCF8UmEzMo6Udu2D\nSuFiqzeN6peY//ArHl7ulA0Ep0FcjfYOukPP3jcERWwYL/eS/1YigAEvjVQhYtXu\nyt5LMkDNuJf+Rji39drNjstF+ej8fa6H4DtMc9y2iDoZ4Mju9twgYHJwKUPmsLyj\nnsJxOdR2HQKBgQCqFnfP1bxjC8FbLC/yc9966GPlv7NwB9blfUpNNmSRrlZtbfet\nPCRlyrirpQl+rQ7ZTlQnVZNzj9JP28n6vMWNBeoONNcncNM6ipbcAK8MajQBF5CJ\nuJH3PH/b1MgFFnUMuptr2yVnhslD8urM68yI6BQd6UDlgDRIK3OkALoitwKBgBOV\nw5W55UJ/gcXWnUYNzd9U8g+1eryeChVJAmCD5HRTASube+9sN079IAmqn/C2PM10\nRiPPj/77qQy89ax5huNcJz/KYdFE+O6njDkd4itN7+f/bN86aa78kyfY7qK3qyZk\n9PB/xfSjq72QHM8quG7ekgpTMiX9ZRAm4D1uFmndAoGBAKg1MEmsn2CsxfYaOfhb\nWEQJI7x0rtkJLiAU8CZJWCbP1gJtKr9Lo4lbP+XQlN2ZVDfbvUVf6h3TLiYow/Bm\nIy5aycirZIydjcViWRXtgX5x9w2amUgWei3eevMJtKCxVNyvq9GFZ/97KTYzIn4g\n2pnEZZmG/xsyab/i+JUtAq+U\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@appmatematicadv.iam.gserviceaccount.com",
+  "client_id": "104707931477002342972",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40appmatematicadv.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
