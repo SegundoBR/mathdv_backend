@@ -19,15 +19,14 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
-def _get_firebase_app() -> firebase_admin.App:
-    """
-    Retorna la app de Firebase Admin SDK.
-    La inicializa una sola vez usando las credenciales del archivo configurado.
-    """
+def _get_firebase_app():
     try:
+        # Intenta obtener la aplicación predeterminada si ya está inicializada
         return firebase_admin.get_app()
     except ValueError:
-        cred = credentials.Certificate(str(settings.FIREBASE_CREDENTIALS_PATH))
+        # Si no existe, procedemos a inicializarla usando la lógica dinámica de settings
+        # settings.FIREBASE_CREDENTIALS contendrá el diccionario (en Render) o la ruta string (en local)
+        cred = credentials.Certificate(settings.FIREBASE_CREDENTIALS)
         return firebase_admin.initialize_app(cred)
 
 
