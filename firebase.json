@@ -1,48 +1,13 @@
 {
-  "project_info": {
-    "project_number": "585124897305",
-    "firebase_url": "https://appmatematicadv-default-rtdb.firebaseio.com",
-    "project_id": "appmatematicadv",
-    "storage_bucket": "appmatematicadv.firebasestorage.app"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:585124897305:android:48fe673d3bad4eaffb0088",
-        "android_client_info": {
-          "package_name": "com.pe.appmobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "585124897305-43k8hirfpj92p0vq97tmk5vqifg0c07u.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.pe.appmobile",
-            "certificate_hash": "1e92177849d54ebdeca011c93962e452c542fc39"
-          }
-        },
-        {
-          "client_id": "585124897305-s56dqf3h8cebtqr4ho8jac9n40298v24.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBI9c8tuDHkYjtYxlmAO7s_9TXN2CdbQDA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "585124897305-s56dqf3h8cebtqr4ho8jac9n40298v24.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+  "type": "service_account",
+  "project_id": "appmatematicadv",
+  "private_key_id": "e5bb70d2cef3c674b1e4bb676c8e5bf8d159ed37",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDNT/VfMtoIzf7D\nziNacJj1mmYwwvdsqzKSrTvAPG70e/XW3B3xPAiotFLV5X3AfOZpwa94hMEo1vU9\n9RQ44LWiebMXc1rDmuzkUbJfdrayaGy7baTTdR0S1u16RLN+ArVsaOGhOxlmkQyE\nVdCO4U4HSFtsdQ7KZuXGMVqIPbVtQFHc8Hwk8LYKX9WD9CGYuo750/qDC/kZIQQ8\niP6Jxx/SOsm9TcMI7JkTXMTEQmbQwU8EztqTxNrIcKHNtlPvTme9nJtcimDWEFfD\n7Sc+NKvXjUQ2RlJ8u76EVqRm/KXn27AM7zXQqzoTaxpviowLxm+A0r0vchwAomxO\nQipQDxZjAgMBAAECggEAV2flechf22S7Q6fUFDIgZFr9i1/NTxWZG6mlaOMxh2Lo\nl7axBpy8wPm31Dj1rsddnoNnDQNTamwNDvnxyH8dxJRUArVI3EJt/IutSQf0ooJj\nW+3DQIS4wmb+xdFOquRDUWpbODU9TJWOwx33goR3oBEVXth82f0xcA1d0eeXf/Eh\nRlegId4j5KHjZbADDY0HQy6FFDdm4RxXg1aqzwGzf++9jkycdwtSyO4EgxvBlFvM\n2xKgRhHa9uSPC1I/GK38LZ1jkqn056lTrN7OEXryKQPzKBpc0O7UZKw21+9mJzSS\nkLIXGPviEXIKTVhpF+YHhTZPo7OZ0ThuCx8PTxzlZQKBgQDqyE7oWkdZC7Qecyb5\nQ6QwWhHS2xtv/yidvYehYv76Ss7ZyiY515V0kgBJnxOv5+T5yozqPxtwUYuFXa0A\ns8yHZTGpyoW5whFCPumqC5Ipg/XQ9kghUC9R4UjMrW5HiaNdpHJ2SaMs1oQCcZg0\nhXzeJxb0Neqykf+uuhxTaEUsPQKBgQDf3dvxUmDANzwi+RQ+A28nMp90m8OQ07ro\n7aHZvSm5Fme+gxagsI44SjWYkLGJWQlReKx/2yi7+hqXQcQ4i9n9V/CkZSQF3mVV\nE4I9TUVi0qu2bqZlvM7z4O6ySHGBozeopoQ/FFj3DZ7cuWBf5h+7pa4t4I5EB7B4\nHYpNYJ5XHwKBgQDHroOGFLpX3p9bwn5kRAZR5VkBZ77nOzGVL0w6k5Le118kVky6\np0OCuGYsN3KsCmNxm7bLx86TcZdjX2+ziDgs84EQsqGXgpnhKNbc/ChczNH13nEs\nfCEy15NuGRcRGtvp2eJL/occrHnsBib4jIvN+ZsJKw4owAmg1sMeoTEr1QKBgDqg\ndHgndbUBAhu6lUWESri+NioonLex61IS4X8PXfzd1D99PxDIDAbL0GtrAUOR8LHI\nY4x8TZek8Q/JpmSUo3sIa7nxztRGoMz99e6t7MzrlRKKucMNBjmyH3DLLgagQvRE\n339RidbxVzhAx+91abwPsKTNGRTR2rIqMkz/T5hLAoGBAMa5l+Uhovj8fNUSMAA+\nGMfDWV6j5CzRyKDVaXD+Uv188uSQ75kCDdq3OcycqpGaPKsmgtlxgRV/TfJSFUuu\nHDOAw0STuIAWoRrYGm6hdfTlNe13dU2DfxVDJXJqdASG5EtUKV7SCducakTHBhZF\n1eRnwzlh0CSsU9tjHD8Iw7+R\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@appmatematicadv.iam.gserviceaccount.com",
+  "client_id": "104707931477002342972",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40appmatematicadv.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
 }
