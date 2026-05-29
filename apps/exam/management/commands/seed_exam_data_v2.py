@@ -27,8 +27,8 @@ EXAM_BLUEPRINTS = {
                 "Identifica relaciones y comparaciones entre fracciones."
             ),
             "difficulty": Exam.Difficulty.EASY,
-            "grade_level": "2do secundaria",
-            "competency_type": "cognitiva",
+            #"grade_level": "2do secundaria",
+            #"competency_type": "cognitiva",
             "generator": lambda: _fraction_comparison_questions(),
         },
         {
@@ -37,8 +37,8 @@ EXAM_BLUEPRINTS = {
                 "Resuelve operaciones básicas con fracciones."
             ),
             "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "2do secundaria",
-            "competency_type": "procedimental",
+            #"grade_level": "2do secundaria",
+            #"competency_type": "procedimental",
             "generator": lambda: _fraction_operations_questions(),
         },
     ],
@@ -50,8 +50,8 @@ EXAM_BLUEPRINTS = {
                 "Reconoce números racionales e irracionales."
             ),
             "difficulty": Exam.Difficulty.EASY,
-            "grade_level": "3ro secundaria",
-            "competency_type": "cognitiva",
+            #"grade_level": "3ro secundaria",
+            #"competency_type": "cognitiva",
             "generator": lambda: _real_number_identification_questions(),
         },
         {
@@ -60,8 +60,8 @@ EXAM_BLUEPRINTS = {
                 "Resuelve operaciones básicas con números reales."
             ),
             "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "3ro secundaria",
-            "competency_type": "procedimental",
+            #"grade_level": "3ro secundaria",
+            #"competency_type": "procedimental",
             "generator": lambda: _real_number_operations_questions(),
         },
     ],
@@ -138,10 +138,10 @@ class Command(BaseCommand):
                         "is_active": True,
 
                         # NUEVOS CAMPOS
-                        "grade_level": str(spec["grade_level"]),
-                        "competency_type": str(
-                            spec["competency_type"]
-                        ),
+                        #"grade_level": str(spec["grade_level"]),
+                        #"competency_type": str(
+                        #    spec["competency_type"]
+                        #),
                     },
                 )
 
