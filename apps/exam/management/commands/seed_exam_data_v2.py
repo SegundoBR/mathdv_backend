@@ -7,7 +7,7 @@ from django.db import transaction
 
 from exam.models import Exam, Question, QuestionOption, Topic
 
-SPOKEN_INSTRUCTION = "Escucha la pregunta y desliza el dedo hacia la opción correcta."
+SPOKEN_INSTRUCTION = "Escucha la pregunta y desliza el dedo hacia la opción correcta. Lleve el dedo a la parte inferior del dispositivo y deslice a la opción correspondiente. Instrucción. Puede responder arrastrando a la izquierda o derecha, o diciendo izquierda o derecha."
 SPOKEN_FEEDBACK_CORRECT = "Respuesta correcta. Excelente trabajo."
 SPOKEN_FEEDBACK_INCORRECT = "Respuesta incorrecta. Intenta nuevamente."
 
