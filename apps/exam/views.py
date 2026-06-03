@@ -166,3 +166,30 @@ class ExamAttemptDetailAPIView(APIView):
 
         serializer = ExamAttemptDetailSerializer(attempt)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class RecommendedActivitiesView(APIView):
+    permission_classes = [IsExamAuthenticated]
+
+    def get(self, request):
+        # 1. Ejecutar el algoritmo LinUCB para el usuario autenticado
+        recommendations = generate_exam_recommendations(user=request.user)
+        
+        # 2. Si el diagnóstico no está hecho, retornar lista vacía para activar el EmptyView
+        if not recommendations:
+            return Response({"activities": []})
+            
+        # 3. Serializar las actividades sugeridas
+        data = [
+            {
+                "id": r.recommended_exam.id,
+                "title": r.recommended_exam.title,
+                "description": r.recommended_exam.description,
+                "difficulty": r.recommended_exam.difficulty,
+                "topic_name": r.recommended_exam.topic.name if r.recommended_exam.topic else "",
+                "confidence": r.confidence,
+                "reason": r.reason
+            }
+            for r in recommendations
+        ]
+        return Response({"activities": data})

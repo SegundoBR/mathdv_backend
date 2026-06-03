@@ -11,6 +11,7 @@ from .views import (
     SubmitAnswerView,
     SubmitBatchView,
     TopicListView,
+    RecommendedActivitiesView,
 )
 
 app_name = "exam"
@@ -34,4 +35,5 @@ urlpatterns = [
         name="history-detail",
     ),
     path("result/", ExamResultView.as_view(), name="result"),
+    path("recommended-activities/", RecommendedActivitiesView.as_view(), name="recommended_activities"),
 ]
