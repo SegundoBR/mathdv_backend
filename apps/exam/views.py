@@ -1,7 +1,6 @@
+from __future__ import annotations
 import logging
 import numpy as np
-from __future__ import annotations
-
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
