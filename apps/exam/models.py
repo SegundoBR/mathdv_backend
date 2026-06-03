@@ -33,8 +33,10 @@ class Exam(models.Model):
         choices=Difficulty.choices,
         default=Difficulty.EASY,
     )
-    grade_level = models.CharField(max_length=50, null=True, blank=True)
-    competency_type = models.CharField(max_length=50, null=True, blank=True)
+    grade_level = models.CharField(max_length=50, null=True, blank=True,
+        default="")
+    competency_type = models.CharField(max_length=50, null=True, blank=True,
+        default="")
     recommended_age_min = models.PositiveSmallIntegerField(null=True, blank=True)
     recommended_age_max = models.PositiveSmallIntegerField(null=True, blank=True)
     is_diagnostic = models.BooleanField(default=False)
