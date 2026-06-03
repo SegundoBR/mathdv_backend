@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
-from .algorithms.recomendation import LinUCBRecommender, DiagnosticFeatureExtractor, ActivityFeatureExtractor
+from algorithms.recomendation import DiagnosticFeatureExtractor, ActivityFeatureExtractor
 
 from .models import (
     Exam,
@@ -307,7 +307,6 @@ def submit_batch_answers(
     attempt.is_completed = True
     attempt.completed_at = timezone.now()
     attempt.save(update_fields=["score", "is_completed", "completed_at"])
-    LinUCBRecommender().recommend_for_user(user)
     percentage = round((score / total_questions) * 100, 1) if total_questions else 0.0
 
     return {
