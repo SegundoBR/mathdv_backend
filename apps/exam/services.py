@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from typing import TypedDict
-
+import numpy as np
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
+from algorithms.recomendation import LinUCBRecommender, DiagnosticFeatureExtractor, ActivityFeatureExtractor
 
 from .models import (
     Exam,
@@ -306,7 +307,7 @@ def submit_batch_answers(
     attempt.is_completed = True
     attempt.completed_at = timezone.now()
     attempt.save(update_fields=["score", "is_completed", "completed_at"])
-
+    LinUCBRecommender().recommend_for_user(user)
     percentage = round((score / total_questions) * 100, 1) if total_questions else 0.0
 
     return {
@@ -318,42 +319,67 @@ def submit_batch_answers(
 
 def generate_exam_recommendations(*, user: User) -> list[ExamRecommendation]:
     """
-    Build recommendations from completed attempts.
-    Rule: topics with average percentage < 70 are considered weak.
+    Genera recomendaciones de actividades personalizadas utilizando el algoritmo LinUCB
+    a partir de las dimensiones del examen diagnóstico.
     """
-    topic_scores = get_user_scores_by_topic(user=user)
-    weak_topics = [row for row in topic_scores if row["avg_percentage"] < 70]
-
-    if not weak_topics:
+    # 1. Obtener vector de contexto del estudiante a partir de su diagnóstico [d=5]
+    # [score_pct, weak_topic_ratio, cognitive_score, procedural_score, difficulty_pattern]
+    user_features = DiagnosticFeatureExtractor.get_user_diagnostic_features(user)
+    
+    # Si el usuario es nuevo o no ha completado el diagnóstico, retornamos lista vacía
+    # obligando a la interfaz móvil a guiarlo a completar su evaluación inicial.
+    diagnostic_exists = UserExamAttempt.objects.filter(
+        user=user,
+        attempt_type=UserExamAttempt.AttemptType.DIAGNOSTIC,
+        is_completed=True
+    ).exists()
+    
+    if not diagnostic_exists:
         return []
 
-    saved: list[ExamRecommendation] = []
-    recommended_exam_ids: set = set()
-
-    for row in sorted(weak_topics, key=lambda r: r["avg_percentage"]):
-        avg = row["avg_percentage"]
-        topic_id = row["topic_id"]
-        confidence = round(min(0.99, max(0.50, (70.0 - avg) / 70.0 + 0.5)), 2)
-
-        exams = Exam.objects.filter(
-            topic_id=topic_id,
-            is_active=True,
-        ).order_by("is_diagnostic", "title")
-
-        for exam in exams:
-            if exam.id in recommended_exam_ids:
-                continue
-
-            recommendation, _ = ExamRecommendation.objects.update_or_create(
-                user=user,
-                recommended_exam=exam,
-                defaults={
-                    "score_basis": round(avg, 1),
-                    "confidence": confidence,
-                    "reason": "Bajo rendimiento detectado",
-                },
-            )
-            recommended_exam_ids.add(exam.id)
-            saved.append(recommendation)
-
-    return sorted(saved, key=lambda r: (r.score_basis, -r.confidence))
+    # 2. Obtener todas las actividades candidatas que no sean de diagnóstico directo
+    candidate_exams = Exam.objects.filter(is_active=True).select_related('topic')
+    
+    saved_recommendations: list[ExamRecommendation] = []
+    
+    # Parámetros simulados de exploración LinUCB (Incertidumbre controlada)
+    # En producción completa, A_a y b_a se extraen de la tabla histórica de coeficientes
+    alpha = 0.2 
+    
+    for exam in candidate_exams:
+        # 3. Extraer vector de características del examen candidato [d=5]
+        # [difficulty_level, is_cognitive, is_procedural, success_rate, completion_rate]
+        activity_features = ActivityFeatureExtractor.get_activity_features(exam)
+        
+        # 4. Cálculo del componente de Explotación (Producto punto de vectores)
+        # Pondera qué tanta necesidad tiene el usuario de cubrir esa competencia/dificultad específica
+        estimated_reward = float(np.dot(user_features, activity_features))
+        
+        # 5. Componente de Exploración (Incertidumbre de la varianza del ejercicio)
+        # Agrega un margen de confianza superior para evitar el estancamiento pedagógico
+        uncertainty = float(alpha * np.sqrt(np.sum(np.square(activity_features))))
+        
+        # Puntaje Final LinUCB (Límite superior de confianza)
+        linucb_score = estimated_reward + uncertainty
+        
+        # Convertir score a formato de confianza porcentual para guardar en el registro [0.0 - 1.0]
+        confidence = round(float(np.clip(linucb_score / 2.0, 0.50, 0.99)), 2)
+        
+        # Invertimos el score_basis para que a menor rendimiento previo en esa dimensión, 
+        # mayor prioridad de aparición tenga en la visualización
+        score_basis = round((1.0 - estimated_reward) * 100, 1)
+        
+        # 6. Guardar o actualizar la actividad recomendada en la base de datos
+        recommendation, _ = ExamRecommendation.objects.update_or_create(
+            user=user,
+            recommended_exam=exam,
+            defaults={
+                "score_basis": score_basis,
+                "confidence": confidence,
+                "reason": f"Prioridad adaptativa LinUCB para nivel {exam.difficulty} ({exam.competency_type})",
+            },
+        )
+        saved_recommendations.append(recommendation)
+        
+    # Retornar el árbol de actividades ordenadas por la prioridad matemática del algoritmo
+    return sorted(saved_recommendations, key=lambda r: (-r.confidence, r.score_basis))
