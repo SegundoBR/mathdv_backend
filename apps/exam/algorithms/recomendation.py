@@ -25,33 +25,33 @@ class DiagnosticFeatureExtractor:
         ).order_by('-completed_at').first()
         
         if not diagnostic:
-            # Usuario nuevo: features por defecto (neutral)
+            # Usuario nuevo:
             return np.array([0.5, 0.5, 0.5, 0.5, 0.5])
         
-        # Feature 1: % de respuestas correctas
-        score_pct = (diagnostic.score / diagnostic.total_questions) if diagnostic.total_questions > 0 else 0.5
-        score_pct = min(1.0, score_pct)  # Normalizar [0, 1]
         
-        # Features por tema
+        score_pct = (diagnostic.score / diagnostic.total_questions) if diagnostic.total_questions > 0 else 0.5
+        score_pct = min(1.0, score_pct)  
+        
+        
         topic_scores = DiagnosticFeatureExtractor._get_topic_scores(diagnostic)
         
-        # Feature 2: Cantidad de temas débiles (< 70%)
+        
         weak_topics = [t for t in topic_scores if t['score_pct'] < 0.7]
         weak_topic_count = min(1.0, len(weak_topics) / max(1, len(topic_scores)))
         
-        # Feature 3: Promedio de temas débiles
+        
         avg_weak_score = (
             np.mean([t['score_pct'] for t in weak_topics]) 
             if weak_topics else 0.7
         )
         
-        # Feature 4: Mejor score en temas
+        
         strong_topic_score = (
             max([t['score_pct'] for t in topic_scores]) 
             if topic_scores else 0.5
         )
         
-        # Feature 5: Patrón de dificultad
+        
         difficulty_pattern = DiagnosticFeatureExtractor._get_difficulty_pattern(diagnostic)
         
         features = np.array([
@@ -62,7 +62,7 @@ class DiagnosticFeatureExtractor:
             difficulty_pattern
         ], dtype=np.float32)
         
-        # Normalizar al rango [0, 1]
+        # 
         features = np.clip(features, 0, 1)
         return features
     
@@ -122,18 +122,18 @@ class ActivityFeatureExtractor:
         [difficulty_level, topic_popularity, success_rate, completion_rate,
          is_diagnostic]
         """
-        # Feature 1: Dificultad normalizada
+        
         difficulty_map = {'EASY': 0.33, 'MEDIUM': 0.66, 'HARD': 1.0}
         difficulty = difficulty_map.get(exam.difficulty, 0.5)
         
-        # Feature 2: Popularidad del tema (normalizad)
+        
         topic_exam_count = Exam.objects.filter(
             topic=exam.topic,
             is_active=True
         ).count()
-        topic_popularity = min(1.0, topic_exam_count / 10.0)  # Asumir max 10 exams/tema
+        topic_popularity = min(1.0, topic_exam_count / 10.0)  
         
-        # Feature 3: Tasa de éxito histórica
+        
         attempts = UserExamAttempt.objects.filter(exam=exam, is_completed=True)
         if attempts.exists():
             total_correct = UserAnswer.objects.filter(
@@ -145,13 +145,13 @@ class ActivityFeatureExtractor:
             ).count()
             success_rate = (total_correct / total_answers) if total_answers > 0 else 0.5
         else:
-            success_rate = 0.5  # Desconocido: explorar
+            success_rate = 0.5  
         
-        # Feature 4: Tasa de completitud
+        
         completion_rate = attempts.count() / max(1, UserExamAttempt.objects.count())
         completion_rate = min(1.0, completion_rate * 10)  # Scale
         
-        # Feature 5: Es diagnóstico
+        
         is_diagnostic = float(exam.is_diagnostic)
         
         features = np.array([
