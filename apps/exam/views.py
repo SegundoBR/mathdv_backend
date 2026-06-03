@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .services import generate_exam_recommendations
-from .algorithms.feature_extractor import DiagnosticFeatureExtractor, ActivityFeatureExtractor
+from .algorithms.recomendation import DiagnosticFeatureExtractor, ActivityFeatureExtractor
 from .models import Exam, UserExamAttempt
 
 from .permissions import IsExamAuthenticated
