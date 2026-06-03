@@ -192,4 +192,4 @@ class RecommendedActivitiesView(APIView):
             }
             for r in recommendations
         ]
-        return Response({"activities": data})
+        return Response({"exams": data})
