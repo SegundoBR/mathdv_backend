@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
-from algorithms.recomendation import DiagnosticFeatureExtractor, ActivityFeatureExtractor
+from .algorithms.recomendation import DiagnosticFeatureExtractor, ActivityFeatureExtractor
 
 from .models import (
     Exam,
