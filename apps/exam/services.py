@@ -381,4 +381,9 @@ def generate_exam_recommendations(*, user: User) -> list[ExamRecommendation]:
         saved_recommendations.append(recommendation)
         
     # Retornar el árbol de actividades ordenadas por la prioridad matemática del algoritmo
-    return sorted(saved_recommendations, key=lambda r: (-r.confidence, r.score_basis))
+    recommendations = sorted(
+    saved_recommendations,
+    key=lambda r: (-r.confidence, r.score_basis)
+    )
+
+    return recommendations[:4]
