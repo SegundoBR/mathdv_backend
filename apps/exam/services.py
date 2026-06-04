@@ -33,7 +33,7 @@ class SubmitAnswerResult(TypedDict):
 
 
 def get_active_questions() -> list[Question]:
-    return get_diagnostic_questions(limit=10)
+    return get_diagnostic_questions(limit=20)
 
 
 def create_or_get_attempt(
