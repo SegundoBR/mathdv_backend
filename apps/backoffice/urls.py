@@ -1,5 +1,5 @@
 from django.urls import path
-
+from rest_framework_simplejwt.views import TokenRefreshView
 from .views import (
     BackofficeExamDetailView,
     BackofficeExamListCreateView,
@@ -61,5 +61,10 @@ urlpatterns = [
         "students/<uuid:student_id>/",
         BackofficeStudentDetailView.as_view(),
         name="student-detail",
+    ),
+    path(
+        "token/refresh/",
+        TokenRefreshView.as_view(),
+        name="token_refresh",
     ),
 ]
