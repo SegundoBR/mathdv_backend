@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
-from apps.account.models import User
-from apps.account.teacher_serializer import TeacherSerializer
+from .models import User
+from .teacher_serializer import TeacherSerializer
 
 
 class TeacherViewSet(viewsets.ModelViewSet):
