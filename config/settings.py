@@ -25,7 +25,7 @@ sys.path.insert(0, str(BASE_DIR / "apps"))
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["127.0.0.1", "localhost", "10.0.2.2"]),
-    CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000", "http://127.0.0.1:3000", "https://mathdv-backend.onrender.com/"]),
+    CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000", "http://127.0.0.1:3000", "https://mathdvdashboard.onrender.com"]),
     CSRF_TRUSTED_ORIGINS=(list, []),
     #DATABASE_URL=(str, f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
     DATABASE_URL=(str, ""),
