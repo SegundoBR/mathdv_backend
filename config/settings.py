@@ -25,9 +25,10 @@ sys.path.insert(0, str(BASE_DIR / "apps"))
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["127.0.0.1", "localhost", "10.0.2.2"]),
-    CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000", "http://127.0.0.1:3000"]),
+    CORS_ALLOWED_ORIGINS=(list, ["http://localhost:3000", "http://127.0.0.1:3000", "https://mathdv-backend.onrender.com/"]),
     CSRF_TRUSTED_ORIGINS=(list, []),
-    DATABASE_URL=(str, f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+    #DATABASE_URL=(str, f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+    DATABASE_URL=(str, ""),
     ACCESS_TOKEN_LIFETIME_MINUTES=(int, 60),
     REFRESH_TOKEN_LIFETIME_DAYS=(int, 7),
     FIREBASE_CREDENTIALS_PATH=(str, "firebase.json"),
