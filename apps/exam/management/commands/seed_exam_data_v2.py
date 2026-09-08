@@ -213,50 +213,76 @@ class Command(BaseCommand):
 
 def _triangle_characteristics_questions() -> list[QuestionPayload]:
     return [
+        
         (
-            "Recuerda: un triángulo tiene tres lados y tres ángulos. "
-            "¿Cuántos lados tiene un triángulo?",
-            "Tres",
-            "Cuatro",
-            True,
-        ),
-        (
-            "Recuerda: todo triángulo tiene tres ángulos internos. "
+            "Recuerda: un triángulo tiene tres lados"
             "¿Cuántos ángulos internos tiene un triángulo?",
             "Tres",
             "Dos",
             True,
         ),
         (
-            "Recuerda: la suma de los ángulos internos de un triángulo es ciento ochenta grados. "
+            "Recuerda: la suma de los ángulos internos de un triángulo es ciento ochenta grados."
             "¿Cuánto suman sus ángulos internos?",
             "Ciento ochenta grados",
             "Doscientos grados",
             True,
         ),
         (
-            "Recuerda: un triángulo equilátero tiene sus tres lados de igual longitud. "
-            "¿Cómo son sus tres lados?",
-            "Iguales",
-            "Diferentes",
+            "Recuerda: la suma de los ángulos internos de un triángulo es ciento ochenta grados. "
+            "Si un ángulo mide setenta grados y otro ochenta grados, ¿cuánto mide el tercero?",
+            "Treinta grados",
+            "Veinte grados",
             True,
         ),
         (
-            "Recuerda: un triángulo isósceles tiene dos lados de igual longitud. "
-            "¿Cuántos lados iguales tiene?",
-            "Dos",
-            "Tres",
+            "Recuerda: un triángulo equilátero tiene tres lados de igual longitud."
+            "Si un lado mide cinco unidades, ¿cuánto miden los otros dos lados?",
+            "Cinco",
+            "Diez",
             True,
         ),
+(
+            "Recuerda: un triángulo escaleno tiene todos sus lados de diferente longitud. "
+            "¿Cómo son sus ángulos?",
+            "Diferentes",
+            "Iguales",
+            True,
+        ),
+        (
+            "Recuerda: un triángulo equilátero tiene angulos internos iguales y la suma de sus ángulos internos es ciento ochenta grados."
+            "¿Cuánto mide un ángulo de un triángulo equilátero?",
+            "Sesenta grados",
+            "Ochenta grados",
+            True,
+        ),
+        (
+            "¿Cómo se llama un triángulo que tiene dos lados iguales?",
+            "Isósceles",
+            "Escaleno",
+            True,
+        ),
+        (
+            "¿Cuál de estos triángulos tiene todos sus lados diferentes?",
+            "Escaleno",
+            "Equilátero",
+            True,
+        ),
+        (
+            "¿Qué característica identifica a un triángulo rectángulo?",
+            "Un ángulo de noventa grados",
+            "Tres ángulos de noventa grados",
+            True,
+        ),
+
     ]
 
 def _triangle_points_questions() -> list[QuestionPayload]:
     return [
         (
-            "Recuerda: el punto donde se cruzan las medianas de un triángulo se llama baricentro. "
-            "¿Cómo se llama este punto?",
-            "Baricentro",
-            "Ortocentro",
+            "Recuerda: La mediana divide un lado en dos partes iguales. Si se traza a un lado de 8 metros, ¿cuánto mide cada parte? ",
+            "Cuatro metros",
+            "Cinco metros",
             True,
         ),
         (
@@ -312,6 +338,48 @@ def _triangle_properties_questions() -> list[QuestionPayload]:
             "Ciento ochenta grados",
             True,
         ),
+        (
+            "Recuerda: los ángulos internos de un triángulo suman ciento ochenta grados. "
+            "Si dos ángulos miden noventa y treinta grados, ¿cuánto mide el tercero?",
+            "Sesenta grados",
+            "Treinta grados",
+            True,
+        ),
+        (
+            "Recuerda: en un triángulo equilátero todos sus lados tienen la misma longitud. "
+            "Si un lado mide ocho centímetros, ¿cuánto mide otro lado?",
+            "Ocho centímetros",
+            "Dieciséis centímetros",
+            True,
+        ),
+        (
+            "Recuerda: en un triángulo isósceles dos lados tienen la misma longitud. "
+            "Si dos lados miden siete centímetros, ¿cuánto mide el otro lado?",
+            "No se puede determinar",
+            "Catorce centímetros",
+            True,
+        ),
+        (
+            "Recuerda: un triángulo rectángulo tiene un ángulo de noventa grados. "
+            "Si otro ángulo mide treinta grados, ¿cuánto mide el tercer ángulo?",
+            "Sesenta grados",
+            "Noventa grados",
+            True,
+        ),
+        (
+            "Recuerda: la suma de los ángulos internos de cualquier triángulo siempre es ciento ochenta grados. "
+            "Si los ángulos miden cincuenta, cincuenta y ochenta grados, ¿forman un triángulo?",
+            "Sí",
+            "No",
+            True,
+        ),
+        (
+            "Recuerda: la suma de los ángulos internos de cualquier triángulo siempre es ciento ochenta grados. "
+            "Si los ángulos miden sesenta, sesenta y sesenta grados, ¿forman un triángulo?",
+            "Sí",
+            "No",
+            True,
+        ),
     ]
 
 def _combined_operations_questions() -> list[QuestionPayload]:
@@ -331,17 +399,52 @@ def _combined_operations_questions() -> list[QuestionPayload]:
             True,
         ),
         (
-            "Recuerda: los paréntesis se resuelven primero. "
-            "¿Cuánto es cinco más dos, todo multiplicado por tres?",
-            "Veintiuno",
-            "Once",
+            "Recuerda: primero se resuelven las multiplicaciones y divisiones. "
+            "¿Cuánto es seis más cuatro dividido entre dos?",
+            "Ocho",
+            "Cinco",
             True,
         ),
         (
-            "Recuerda: primero se resuelven los paréntesis. "
-            "¿Cuánto es diez más cuatro, dividido entre dos?",
-            "Siete",
+            "Recuerda: primero se resuelven las multiplicaciones y divisiones. "
+            "¿Cuánto es doce menos tres por dos?",
+            "Seis",
+            "Dieciocho",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelve la división. "
+            "¿Cuánto es doce dividido entre tres más cinco?",
+            "Nueve",
+            "Dos",
+            True,
+        ),
+        (
+            "Recuerda: los paréntesis tienen prioridad. "
+            "¿Cuánto es nueve menos tres, todo multiplicado por dos?",
             "Doce",
+            "Tres",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelve el paréntesis y después la multiplicación. "
+            "¿Cuánto es cuatro más tres, multiplicado por dos?",
+            "Catorce",
+            "Diez",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelve la división y después la suma. "
+            "¿Cuánto es dieciséis dividido entre cuatro más seis?",
+            "Diez",
+            "Cuatro",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelve la multiplicación y después la suma. "
+            "¿Cuánto es siete más cinco por dos?",
+            "Diecisiete",
+            "Veinticuatro",
             True,
         ),
     ]
@@ -350,21 +453,21 @@ def _linear_equations_questions() -> list[QuestionPayload]:
     return [
         (
             "Recuerda: para resolver una ecuación debemos encontrar el valor de la incógnita. "
-            "¿Cuál es el valor de x en x más cinco igual a doce?",
+            "¿Cuál es el valor de x en: x más cinco igual a doce?",
             "Siete",
             "Diecisiete",
             True,
         ),
         (
             "Recuerda: una ecuación de primer grado tiene la incógnita elevada a uno. "
-            "¿Cuál es el valor de x en dos x igual a diez?",
+            "¿Cuál es el valor de x en: dos x es igual a diez?",
             "Cinco",
             "Veinte",
             True,
         ),
         (
             "Recuerda: para encontrar x podemos realizar la operación inversa. "
-            "¿Cuál es el valor de x en x menos cuatro igual a nueve?",
+            "¿Cuál es el valor de x en: x menos cuatro es igual a nueve?",
             "Trece",
             "Cinco",
             True,
@@ -383,41 +486,32 @@ def _linear_equations_questions() -> list[QuestionPayload]:
             "Ocho",
             True,
         ),
+        (
+            "Recuerda: para resolver cuatro x igual a veinte, dividimos entre cuatro. "
+            "¿Cuál es el valor de x?",
+            "Cinco",
+            "Ocho",
+            True,
+        ),
+        ("¿Qué número multiplicado por dos da como resultado diez?", "5", "20", True), ("¿Qué número menos cuatro da como resultado nueve?", "13", "5", True), ("¿Qué número multiplicado por tres da como resultado dieciocho?", "6", "9", True), ("¿Qué número sumado con ocho da como resultado quince?", "7", "23", True), ("¿Qué número menos diez da como resultado cinco?", "15", "5", True), ("¿Qué número multiplicado por cinco da como resultado veinticinco?", "5", "10", True), ("¿Qué número sumado con doce da como resultado veinte?", "8", "32", True), ("¿Qué número multiplicado por cuatro da como resultado dieciséis?", "4", "8", True), ("¿Qué número menos siete da como resultado tres?", "10", "4", True),
     ]
 
 def _everyday_linear_problems_questions() -> list[QuestionPayload]:
     return [
-        (
-            "Recuerda: una situación puede representarse mediante una ecuación. "
-            "Juan compra tres cuadernos iguales y paga quince soles. "
-            "Si x representa el precio de un cuaderno, ¿qué ecuación representa la situación?",
-            "Tres x igual a quince",
-            "Quince x igual a tres",
+(
+            "Un solo cuaderno cuesta seis soles. Si pagué dieciocho soles, ¿cuántos cuadernos compré?",
+            "Tres",
+            "Dos",
             True,
         ),
         (
-            "Recuerda: una ecuación permite representar una situación cotidiana. "
-            "Ana tenía cierta cantidad de soles y recibió cinco soles. "
-            "Ahora tiene diecisiete soles. Si x es el dinero que tenía, ¿qué ecuación representa la situación?",
-            "x más cinco igual a diecisiete",
-            "x menos cinco igual a diecisiete",
-            True,
+            "Recuerda: para representar una cantidad que disminuye podemos utilizar una resta. "
+            "Carlos tenía cierta cantidad de soles y gastó cinco. "
+            "Ahora tiene diez soles. ¿Cuanto dinero tenía Carlos al principio?",
+            "Diez",
+            "Quince",
+            False,
         ),
-        (
-            "Recuerda: para representar cantidades desconocidas podemos utilizar x. "
-            "Un taxi cobra tres soles por kilómetro. Si x representa los kilómetros recorridos "
-            "y el viaje costó doce soles, ¿qué ecuación representa la situación?",
-            "Tres x igual a doce",
-            "Doce x igual a tres",
-            True,
-        ),
-        (
-            "Recuerda: una cantidad desconocida puede representarse con x. "
-            "Pedro compra cuatro lapiceros iguales y paga veinte soles. "
-            "Si x representa el precio de un lapicero, ¿qué ecuación representa la situación?",
-            "Cuatro x igual a veinte",
-            "Veinte x igual a cuatro",
-            True,
-        ),
+        ("Juan compra 3 cuadernos iguales por 15 soles. ¿Cuánto costó cada cuaderno?", "5 soles", "3 soles", True), ("María tiene el doble de la edad de Luis. Si ambas edades suman 18 años, ¿cuál es la edad de Luis?", "6 años", "9 años", True), ("Pedro compró 4 lapiceros por 20 soles. ¿Cuánto costó cada lapicero?", "5 soles", "4 soles", True), ("Ana ahorra 2 soles diarios. Después de 7 días tendrá:", "14 soles", "9 soles", True), ("Un taxi cobra 3 soles por kilómetro. En un viaje de 4 kilómetros cobrará:", "12 soles", "7 soles", True), ("Luis compró 5 caramelos por 10 soles. Cada caramelo cuesta:", "2 soles", "5 soles", True), ("Si un cuaderno cuesta 8 soles, ¿cuánto cuestan 2 cuadernos?", "16 soles", "10 soles", True), ("Un alumno lee 4 páginas diarias. En un periodo de 5 días leerá:", "20 páginas", "15 páginas", True), ("Carlos tiene el triple de dinero que Ana. Si juntos tienen 24 soles, Ana tiene:", "6 soles", "8 soles", True), ("Una caja contiene 6 botellas. ¿Cuántas botellas hay en un lote de 3 cajas?", "18 botellas", "12 botellas", True),
     ]
 
