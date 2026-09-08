@@ -19,111 +19,81 @@ QuestionGenerator = Callable[[], list[QuestionPayload]]
 
 # 1. TEMAS EXPANDIDOS Y REGISTRADOS PARA SEGUNDO GRADO DE SECUNDARIA
 TOPIC_NAMES = [
-    "Números racionales",
-    "Números reales y notación",
-    "Sucesiones con números reales",
+    "Características de los triángulos",
+    "Puntos de los triángulos",
+    "Propiedades de los triángulos",
+    "Operaciones combinadas",
     "Ecuaciones de primer grado",
-    "Porcentajes e IGV",
-    "Conversión de unidades",
-    "Medidas de tendencia central",
+    "Problemas con casos de la vida real",
 ]
 
 # 2. SE ANCLAN LOS PLANES DE EXÁMENES DIRECTAMENTE A LAS CAPACIDADES EXIGIDAS
 EXAM_BLUEPRINTS = {
-    "Números racionales": [
+    "Características de los triángulos": [
         {
-            "title": "Comparación de fracciones",
-            "description": "Identifica relaciones y comparaciones conceptuales entre fracciones.",
+            "title": "Características de los triángulos",
+            "description": "Reconoce las principales características y elementos básicos de los triángulos.",
             "difficulty": Exam.Difficulty.EASY,
             "grade_level": "2do secundaria",
-            "competency_type": "cognitiva",  # Actividad de Comprensión
-            "generator": lambda: _fraction_comparison_questions(),
-        },
-        {
-            "title": "Operaciones con fracciones",
-            "description": "Resuelve operaciones básicas de cálculo mental con fracciones.",
-            "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "2do secundaria",
-            "competency_type": "procedimental",  # Actividad de Aplicación
-            "generator": lambda: _fraction_operations_questions(),
+            "competency_type": "cognitiva",
+            "generator": lambda: _triangle_characteristics_questions(),
         },
     ],
-    "Números reales y notación": [
+
+    "Puntos de los triángulos": [
         {
-            "title": "Identificación de números reales",
-            "description": "Reconoce números racionales e irracionales.",
-            "difficulty": Exam.Difficulty.EASY,
-            "grade_level": "2do secundaria", # Corregido a 2do de secundaria según CENEB
-            "competency_type": "cognitiva",
-            "generator": lambda: _real_number_identification_questions(),
-        },
-        {
-            "title": "Operaciones y notación científica",
-            "description": "Resuelve operaciones básicas e interpreta expresiones de potencias y notación científica.",
+            "title": "Puntos de los triángulos",
+            "description": "Identifica los principales puntos notables de un triángulo.",
             "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "2do secundaria", # Corregido a 2do de secundaria
+            "grade_level": "2do secundaria",
+            "competency_type": "cognitiva",
+            "generator": lambda: _triangle_points_questions(),
+        },
+    ],
+
+    "Propiedades de los triángulos": [
+        {
+            "title": "Propiedades de los triángulos",
+            "description": "Aplica propiedades básicas de los triángulos para resolver situaciones matemáticas.",
+            "difficulty": Exam.Difficulty.MEDIUM,
+            "grade_level": "2do secundaria",
             "competency_type": "procedimental",
-            "generator": lambda: _real_number_operations_questions(),
+            "generator": lambda: _triangle_properties_questions(),
         },
     ],
-    "Sucesiones con números reales": [
+
+    "Operaciones combinadas": [
         {
-            "title": "Patrones y Sucesiones Reales",
-            "description": "Descubre el término faltante en progresiones aritméticas y geométricas.",
+            "title": "Operaciones combinadas",
+            "description": "Resuelve operaciones combinadas respetando el orden de las operaciones.",
             "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "2do secundaria", # Ajustado a Ciclo VI
-            "competency_type": "cognitiva",
-            "generator": lambda: _real_sequences_questions(),
-        }
+            "grade_level": "2do secundaria",
+            "competency_type": "procedimental",
+            "generator": lambda: _combined_operations_questions(),
+        },
     ],
+
     "Ecuaciones de primer grado": [
         {
-            "title": "Resolución de Ecuaciones Lineales",
-            "description": "Despeja la incógnita en problemas lineales simples.",
-            "difficulty": Exam.Difficulty.EASY,
+            "title": "Ecuaciones de primer grado",
+            "description": "Resuelve ecuaciones de primer grado con una incógnita.",
+            "difficulty": Exam.Difficulty.MEDIUM,
             "grade_level": "2do secundaria",
             "competency_type": "procedimental",
             "generator": lambda: _linear_equations_questions(),
         },
+    ],
+
+    "Problemas con casos de la vida real": [
         {
-            "title": "Casos Cotidianos con Ecuaciones Lineales",
-            "description": "Plantea y resuelve situaciones de compras y préstamos basados en casos reales cotidianos.",
+            "title": "Problemas con casos de la vida real",
+            "description": "Plantea y resuelve ecuaciones de primer grado a partir de situaciones cotidianas.",
             "difficulty": Exam.Difficulty.HARD,
             "grade_level": "2do secundaria",
             "competency_type": "procedimental",
             "generator": lambda: _everyday_linear_problems_questions(),
-        }
+        },
     ],
-    "Porcentajes e IGV": [
-        {
-            "title": "Aumentos, descuentos e IGV",
-            "description": "Resuelve problemas comerciales aplicando el impuesto general a las ventas (IGV) y descuentos.",
-            "difficulty": Exam.Difficulty.HARD,
-            "grade_level": "2do secundaria",
-            "competency_type": "procedimental",
-            "generator": lambda: _percentage_questions(),
-        }
-    ],
-    "Conversión de unidades": [
-        {
-            "title": "Conversión de masa, tiempo y divisas",
-            "description": "Mapea y convierte unidades de temperatura, pesos y monedas de diferentes países.",
-            "difficulty": Exam.Difficulty.MEDIUM,
-            "grade_level": "2do secundaria",
-            "competency_type": "procedimental",
-            "generator": lambda: _unit_conversion_questions(),
-        }
-    ],
-    "Medidas de tendencia central": [
-        {
-            "title": "Cálculo de tendencia estadística",
-            "description": "Analiza e identifica la media, la mediana y la moda en lotes de datos numéricos.",
-            "difficulty": Exam.Difficulty.EASY,
-            "grade_level": "2do secundaria",
-            "competency_type": "cognitiva",
-            "generator": lambda: _statistics_questions(),
-        }
-    ]
 }
 
 class Command(BaseCommand):
@@ -241,124 +211,213 @@ class Command(BaseCommand):
 # BANCO DE PREGUNTAS MODIFICADO Y EXPANDIDO CON DICTADO FONÉTICO
 # =========================================================
 
-def _fraction_comparison_questions() -> list[QuestionPayload]:
+def _triangle_characteristics_questions() -> list[QuestionPayload]:
     return [
-        ("¿Qué fracción es mayor?", "Tres Cuartos", "Dos Tercios", True),
-        ("¿Cuál fracción representa una cantidad menor?", "Un Octavo", "Un Cuarto", True),
-        ("¿Cuál número racional es negativo?", "Menos Dos Tercios", "Tres Quintos", True),
-        ("¿Cuál fracción es equivalente a Un Medio?", "Dos Cuartos", "Tres Cuartos", True),
-        ("¿Cuál fracción está más cerca del número entero uno?", "Siete Octavos", "Un Cuarto", True),
+        (
+            "Recuerda: un triángulo tiene tres lados y tres ángulos. "
+            "¿Cuántos lados tiene un triángulo?",
+            "Tres",
+            "Cuatro",
+            True,
+        ),
+        (
+            "Recuerda: todo triángulo tiene tres ángulos internos. "
+            "¿Cuántos ángulos internos tiene un triángulo?",
+            "Tres",
+            "Dos",
+            True,
+        ),
+        (
+            "Recuerda: la suma de los ángulos internos de un triángulo es ciento ochenta grados. "
+            "¿Cuánto suman sus ángulos internos?",
+            "Ciento ochenta grados",
+            "Doscientos grados",
+            True,
+        ),
+        (
+            "Recuerda: un triángulo equilátero tiene sus tres lados de igual longitud. "
+            "¿Cómo son sus tres lados?",
+            "Iguales",
+            "Diferentes",
+            True,
+        ),
+        (
+            "Recuerda: un triángulo isósceles tiene dos lados de igual longitud. "
+            "¿Cuántos lados iguales tiene?",
+            "Dos",
+            "Tres",
+            True,
+        ),
     ]
 
-def _real_number_identification_questions() -> list[QuestionPayload]:
+def _triangle_points_questions() -> list[QuestionPayload]:
     return [
-        ("¿Cuál pertenece a los números enteros?", "Menos Cuatro", "Dos Tercios", True),
-        ("¿Cuál es un número decimal exacto?", "Cero Coma Veinticinco", "Raíz de Once", True),
-        ("¿Cuál pertenece a los números racionales?", "Tres Novenos", "Pi", True),
-        ("¿Cuál es un número natural?", "Ocho", "Menos Dos", True),
+        (
+            "Recuerda: el punto donde se cruzan las medianas de un triángulo se llama baricentro. "
+            "¿Cómo se llama este punto?",
+            "Baricentro",
+            "Ortocentro",
+            True,
+        ),
+        (
+            "Recuerda: el punto donde se cruzan las alturas se llama ortocentro. "
+            "¿Cómo se llama este punto?",
+            "Ortocentro",
+            "Baricentro",
+            True,
+        ),
+        (
+            "Recuerda: el punto donde se cruzan las bisectrices se llama incentro. "
+            "¿Cómo se llama este punto?",
+            "Incentro",
+            "Circuncentro",
+            True,
+        ),
+        (
+            "Recuerda: el circuncentro es el punto donde se cruzan las mediatrices. "
+            "¿Qué líneas se cruzan en el circuncentro?",
+            "Mediatrices",
+            "Medianas",
+            True,
+        ),
     ]
 
-def _fraction_operations_questions() -> list[QuestionPayload]:
+def _triangle_properties_questions() -> list[QuestionPayload]:
     return [
-        # Corrección fonética del dictado de las operaciones para evitar el error barra (/)
-        ("¿Cuánto resulta al sumar un medio más un cuarto?", "Tres cuartos", "Dos sextos", True),
-        ("¿Cuánto resulta al restar cinco sextos menos un tercio?", "Un medio", "Dos tercios", True),
-        ("¿Cuánto resulta al multiplicar dos quintos por tres cuartos?", "Seis veinteavos", "Cinco novenos", True),
-        ("¿Cuánto resulta al sumar tres octavos más un octavo?", "Cuatro octavos", "Cinco octavos", True),
-        ("¿Cuánto resulta al restar cuatro quintos menos dos quintos?", "Dos quintos", "Tres quintos", True),
+        (
+            "Recuerda: la suma de los ángulos internos de un triángulo es ciento ochenta grados. "
+            "Si dos ángulos miden sesenta y ochenta grados, ¿cuánto mide el tercero?",
+            "Cuarenta grados",
+            "Cincuenta grados",
+            True,
+        ),
+        (
+            "Recuerda: la suma de los ángulos internos es ciento ochenta grados. "
+            "Si dos ángulos miden cincuenta y setenta grados, ¿cuánto mide el tercero?",
+            "Sesenta grados",
+            "Setenta grados",
+            True,
+        ),
+        (
+            "Recuerda: en un triángulo equilátero los tres ángulos internos son iguales. "
+            "¿Cuánto mide cada ángulo?",
+            "Sesenta grados",
+            "Noventa grados",
+            True,
+        ),
+        (
+            "Recuerda: un triángulo rectángulo tiene un ángulo recto. "
+            "¿Cuánto mide un ángulo recto?",
+            "Noventa grados",
+            "Ciento ochenta grados",
+            True,
+        ),
     ]
 
-def _real_number_operations_questions() -> list[QuestionPayload]:
+def _combined_operations_questions() -> list[QuestionPayload]:
     return [
-        ("¿Cuánto es la raíz cuadrada de nueve sumado con el número dos?", "Cinco", "Seis", True),
-        ("¿Cuánto es tres coma cinco más un coma dos?", "Cuatro coma siete", "Cinco coma dos", True),
-        ("¿Cuánto es diez menos tres coma ocho?", "Seis coma dos", "Siete coma dos", True),
-        # Adición de Notación Exponencial solicitada por el revisor:
-        ("¿Cómo se lee diez elevado al exponente tres en notación exponencial?", "Mil", "Trescientos", True),
-        ("¿Cuánto es la raíz cuadrada de dieciséis?", "Cuatro", "Ocho", True),
-    ]
-
-def _real_sequences_questions() -> list[QuestionPayload]:
-    return [
-        ("En la sucesión aritmética: 2, 5, 8... ¿Qué número sigue?", "11", "10", True),
-        ("En la sucesión geométrica: 3, 6, 12... ¿Qué número sigue?", "24", "18", True),
-        ("En la sucesión: 4, 8, 12... ¿Qué número sigue?", "16", "18", True),
-        ("En la sucesión: 1, 4, 7... ¿Qué número sigue?", "10", "9", True),
-        ("En la sucesión: 5, 10, 20... ¿Qué número sigue?", "40", "30", True),
-        ("En la sucesión: 10, 8, 6... ¿Qué número sigue?", "4", "5", True),
-        ("En la sucesión: 1, 3, 9... ¿Qué número sigue?", "27", "12", True),
-        ("En la sucesión: 100, 90, 80... ¿Qué número sigue?", "70", "75", True),
-        ("En la sucesión: 7, 14, 21... ¿Qué número sigue?", "28", "24", True),
-        ("En la sucesión: 2, 4, 8... ¿Qué número sigue?", "16", "12", True),
+        (
+            "Recuerda: primero se resuelven las multiplicaciones y divisiones, "
+            "antes que las sumas y restas. ¿Cuánto es ocho más dos por tres?",
+            "Catorce",
+            "Treinta",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelven las multiplicaciones y divisiones. "
+            "¿Cuánto es diez menos dos por tres?",
+            "Cuatro",
+            "Veinticuatro",
+            True,
+        ),
+        (
+            "Recuerda: los paréntesis se resuelven primero. "
+            "¿Cuánto es cinco más dos, todo multiplicado por tres?",
+            "Veintiuno",
+            "Once",
+            True,
+        ),
+        (
+            "Recuerda: primero se resuelven los paréntesis. "
+            "¿Cuánto es diez más cuatro, dividido entre dos?",
+            "Siete",
+            "Doce",
+            True,
+        ),
     ]
 
 def _linear_equations_questions() -> list[QuestionPayload]:
     return [
-        ("¿Qué número sumado con cinco da como resultado doce?", "7", "17", True),
-        ("¿Qué número multiplicado por dos da como resultado diez?", "5", "20", True),
-        ("¿Qué número menos cuatro da como resultado nueve?", "13", "5", True),
-        ("¿Qué número multiplicado por tres da como resultado dieciocho?", "6", "9", True),
-        ("¿Qué número sumado con ocho da como resultado quince?", "7", "23", True),
-        ("¿Qué número menos diez da como resultado cinco?", "15", "5", True),
-        ("¿Qué número multiplicado por cinco da como resultado veinticinco?", "5", "10", True),
-        ("¿Qué número sumado con doce da como resultado veinte?", "8", "32", True),
-        ("¿Qué número multiplicado por cuatro da como resultado dieciséis?", "4", "8", True),
-        ("¿Qué número menos siete da como resultado tres?", "10", "4", True),
+        (
+            "Recuerda: para resolver una ecuación debemos encontrar el valor de la incógnita. "
+            "¿Cuál es el valor de x en x más cinco igual a doce?",
+            "Siete",
+            "Diecisiete",
+            True,
+        ),
+        (
+            "Recuerda: una ecuación de primer grado tiene la incógnita elevada a uno. "
+            "¿Cuál es el valor de x en dos x igual a diez?",
+            "Cinco",
+            "Veinte",
+            True,
+        ),
+        (
+            "Recuerda: para encontrar x podemos realizar la operación inversa. "
+            "¿Cuál es el valor de x en x menos cuatro igual a nueve?",
+            "Trece",
+            "Cinco",
+            True,
+        ),
+        (
+            "Recuerda: para resolver tres x igual a dieciocho, dividimos entre tres. "
+            "¿Cuál es el valor de x?",
+            "Seis",
+            "Nueve",
+            True,
+        ),
+        (
+            "Recuerda: para resolver cuatro x igual a veinte, dividimos entre cuatro. "
+            "¿Cuál es el valor de x?",
+            "Cinco",
+            "Ocho",
+            True,
+        ),
     ]
 
 def _everyday_linear_problems_questions() -> list[QuestionPayload]:
     return [
-        ("Juan compra 3 cuadernos iguales por 15 soles. ¿Cuánto costó cada cuaderno?", "5 soles", "3 soles", True),
-        ("María tiene el doble de la edad de Luis. Si ambas edades suman 18 años, ¿cuál es la edad de Luis?", "6 años", "9 años", True),
-        ("Pedro compró 4 lapiceros por 20 soles. ¿Cuánto costó cada lapicero?", "5 soles", "4 soles", True),
-        ("Ana ahorra 2 soles diarios. Después de 7 días tendrá:", "14 soles", "9 soles", True),
-        ("Un taxi cobra 3 soles por kilómetro. En un viaje de 4 kilómetros cobrará:", "12 soles", "7 soles", True),
-        ("Luis compró 5 caramelos por 10 soles. Cada caramelo cuesta:", "2 soles", "5 soles", True),
-        ("Si un cuaderno cuesta 8 soles, ¿cuánto cuestan 2 cuadernos?", "16 soles", "10 soles", True),
-        ("Un alumno lee 4 páginas diarias. En un periodo de 5 días leerá:", "20 páginas", "15 páginas", True),
-        ("Carlos tiene el triple de dinero que Ana. Si juntos tienen 24 soles, Ana tiene:", "6 soles", "8 soles", True),
-        ("Una caja contiene 6 botellas. ¿Cuántas botellas hay en un lote de 3 cajas?", "18 botellas", "12 botellas", True),
+        (
+            "Recuerda: una situación puede representarse mediante una ecuación. "
+            "Juan compra tres cuadernos iguales y paga quince soles. "
+            "Si x representa el precio de un cuaderno, ¿qué ecuación representa la situación?",
+            "Tres x igual a quince",
+            "Quince x igual a tres",
+            True,
+        ),
+        (
+            "Recuerda: una ecuación permite representar una situación cotidiana. "
+            "Ana tenía cierta cantidad de soles y recibió cinco soles. "
+            "Ahora tiene diecisiete soles. Si x es el dinero que tenía, ¿qué ecuación representa la situación?",
+            "x más cinco igual a diecisiete",
+            "x menos cinco igual a diecisiete",
+            True,
+        ),
+        (
+            "Recuerda: para representar cantidades desconocidas podemos utilizar x. "
+            "Un taxi cobra tres soles por kilómetro. Si x representa los kilómetros recorridos "
+            "y el viaje costó doce soles, ¿qué ecuación representa la situación?",
+            "Tres x igual a doce",
+            "Doce x igual a tres",
+            True,
+        ),
+        (
+            "Recuerda: una cantidad desconocida puede representarse con x. "
+            "Pedro compra cuatro lapiceros iguales y paga veinte soles. "
+            "Si x representa el precio de un lapicero, ¿qué ecuación representa la situación?",
+            "Cuatro x igual a veinte",
+            "Veinte x igual a cuatro",
+            True,
+        ),
     ]
 
-def _percentage_questions() -> list[QuestionPayload]:
-    return [
-        ("Una camisa cuesta cien soles y tiene un descuento de veinte por ciento. ¿Cuál es el nuevo precio?", "ochenta soles", "noventa soles", True),
-        ("Un producto cuesta cincuenta soles. Si aumenta diez por ciento, costará:", "cincuenta y cinco soles", "sesenta soles", True),
-        # Casos de IGV solicitados:
-        ("Un reproductor cuesta cien soles sin impuesto. Al aplicarle el dieciocho por ciento de I G V, ¿cuánto cuesta?", "ciento dieciocho soles", "ciento ocho soles", True),
-        ("El veinte por ciento de cien es:", "veinte", "diez", True),
-        ("El cincuenta por ciento de doscientos es:", "cien", "cincuenta", True),
-        # Descuentos sucesivos solicitados por el revisor:
-        ("Si un parlante de cien soles recibe dos desvíos o descuentos sucesivos del diez por ciento, ¿su precio final es ochenta soles?", "No, porque el segundo descuento opera sobre el nuevo saldo", "Sí, los porcentajes se restan directo", True),
-        ("El diez por ciento de cincuenta es:", "cinco", "diez", True),
-        ("Un producto de cien soles con descuento del treinta por ciento cuesta:", "setenta soles", "ochenta soles", True),
-        ("El veinticinco por ciento de cien es:", "veinticinco", "quince", True),
-        ("Un producto cuesta doscientos soles. Con descuento de un cuarto del total queda en:", "ciento cincuenta soles", "ciento setenta soles", True),
-    ]
-
-def _unit_conversion_questions() -> list[QuestionPayload]:
-    return [
-        ("¿Cuántos gramos tiene un kilogramo de masa?", "mil gramos", "cien gramos", True),
-        ("¿Cuántos minutos tiene una hora de tiempo?", "sesenta minutos", "cien minutos", True),
-        ("¿Cuántas horas tiene un día completo?", "veinticuatro horas", "doce horas", True),
-        ("¿Cuántos centímetros tiene un metro de longitud?", "cien centímetros", "mil centímetros", True),
-        ("¿Cuántos segundos tiene un minuto?", "sesenta segundos", "cien segundos", True),
-        ("Dos kilogramos equivalen a:", "dos mil gramos", "doscientos gramos", True),
-        ("Medio kilogramo equivale a:", "quinientos gramos", "cincuenta gramos", True),
-        # Casos cotidianos de conversión de monedas y temperaturas:
-        ("Si tienes diez dólares y el tipo de cambio es tres coma setenta soles por dólar, obtendrás:", "treinta y siete soles", "treinta soles", True),
-        ("Si el agua hierve a cien grados Celsius, ¿un clima de treinta y siete grados representa congelación?", "No, es una temperatura ambiental cálida", "Sí, el agua se hace hielo", True),
-        ("Mililitros y litros son unidades de:", "capacidad", "temperatura", True),
-    ]
-
-def _statistics_questions() -> list[QuestionPayload]:
-    return [
-        ("En la lista estadística de valores dos, cuatro y seis. ¿Cuál es la media aritmética?", "cuatro", "cinco", True),
-        ("En la lista uno, dos, dos y tres. ¿Cuál es la medida de la moda?", "dos", "tres", True),
-        ("En la lista ordenada uno, tres y cinco. ¿Cuál es el valor de la mediana?", "tres", "cinco", True),
-        ("En la lista cinco, cinco, siete y ocho. ¿Cuál es la moda?", "cinco", "siete", True),
-        ("En la lista dos, cuatro, seis y ocho. ¿Cuál es el promedio aritmético?", "cinco", "seis", True),
-        ("La moda es el valor estadístico que:", "más se repite", "menos se repite", True),
-        ("La mediana es el valor central que queda:", "en el centro posicional", "al final de la lista", True),
-        ("La media también se conoce en la vida cotidiana como:", "promedio", "porcentaje", True),
-    ]
