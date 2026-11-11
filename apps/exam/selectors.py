@@ -55,34 +55,64 @@ def get_exam_questions(*, exam_id) -> QuerySet[Question]:
     return get_questions(active_only=True).filter(exam_id=exam_id)
 
 
-def get_diagnostic_questions(*, limit: int = 20) -> list[Question]:
-    """Return randomized active questions from the exam with most active questions."""
-    # Get the exam with the most active questions
-    exam = (
-        Exam.objects.filter(is_active=True)
-        .annotate(
-            active_questions_count=Count(
-                "questions", filter=Q(questions__is_active=True)
-            )
-        )
-        .filter(active_questions_count__gt=0)
-        .order_by("-active_questions_count")
-        .first()
-    )
 
-    if not exam:
+def get_diagnostic_questions(*, limit: int = 24) -> list[Question]:
+    """
+    Selecciona preguntas diagnósticas de distintos temas,
+    distribuyéndolas de forma equilibrada.
+    """
+
+    exams = Exam.objects.filter(
+        is_active=True,
+        is_diagnostic=True,
+    ).select_related("topic")
+
+    questions_by_topic = {}
+
+    for exam in exams:
+        questions = list(
+            get_questions(active_only=True).filter(exam=exam)
+        )
+
+        if not questions:
+            continue
+
+        topic_id = exam.topic_id
+
+        if topic_id not in questions_by_topic:
+            questions_by_topic[topic_id] = []
+
+        questions_by_topic[topic_id].extend(questions)
+
+    if not questions_by_topic:
         return []
 
-    # Get questions from this exam, randomized
-    questions = list(
-        Question.objects.filter(
-            exam=exam,
-            is_active=True,
-        )
-    )
+    for questions in questions_by_topic.values():
+        random.shuffle(questions)
 
-    random.shuffle(questions)
-    return questions[:limit]
+    selected = []
+
+    # Selección equilibrada por rondas
+    while len(selected) < limit:
+        added = False
+
+        for topic_id in list(questions_by_topic.keys()):
+            if len(selected) >= limit:
+                break
+
+            if questions_by_topic[topic_id]:
+                selected.append(
+                    questions_by_topic[topic_id].pop()
+                )
+                added = True
+
+        if not added:
+            break
+
+    random.shuffle(selected)
+
+    return selected
+
 
 
 def get_user_attempt(

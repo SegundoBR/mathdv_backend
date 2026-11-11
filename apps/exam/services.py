@@ -337,7 +337,10 @@ def generate_exam_recommendations(*, user: User) -> list[ExamRecommendation]:
         return []
 
     # 2. Obtener todas las actividades candidatas que no sean de diagnóstico directo
-    candidate_exams = Exam.objects.filter(is_active=True).select_related('topic')
+    candidate_exams = Exam.objects.filter(
+        is_active=True,
+        is_diagnostic=False
+    ).select_related("topic")
     
     saved_recommendations: list[ExamRecommendation] = []
     
@@ -387,3 +390,6 @@ def generate_exam_recommendations(*, user: User) -> list[ExamRecommendation]:
     )
 
     return recommendations[:4]
+
+
+

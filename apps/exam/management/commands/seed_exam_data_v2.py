@@ -153,17 +153,25 @@ class Command(BaseCommand):
                 if created:
                     self.exams_created += 1
         return exams_by_title
+    
+    DIAGNOSTIC_QUESTIONS_PER_TOPIC = 4
 
     def seed_questions(self, exams: dict[str, Exam]) -> None:
         for _, exam_specs in EXAM_BLUEPRINTS.items():
             for spec in exam_specs:
                 exam = exams[str(spec["title"])]
                 generator = spec["generator"]
-                question_items = generator()
+
+                question_items = generator()[:DIAGNOSTIC_QUESTIONS_PER_TOPIC]
 
                 for idx, item in enumerate(question_items, start=1):
                     question_text, left_label, right_label, is_left_correct = item
-                    spoken_question = f"{question_text} Opción izquierda: {left_label}. Opción derecha: {right_label}."
+
+                    spoken_question = (
+                        f"{question_text} "
+                        f"Opción izquierda: {left_label}. "
+                        f"Opción derecha: {right_label}."
+                    )
 
                     question, created = Question.objects.get_or_create(
                         exam=exam,
@@ -178,6 +186,7 @@ class Command(BaseCommand):
                             "is_active": True,
                         },
                     )
+
                     if created:
                         self.questions_created += 1
 
@@ -280,30 +289,60 @@ def _triangle_characteristics_questions() -> list[QuestionPayload]:
 def _triangle_points_questions() -> list[QuestionPayload]:
     return [
         (
-            "Recuerda: La mediana divide un lado en dos partes iguales. Si se traza a un lado de 8 metros, ¿cuánto mide cada parte? ",
-            "Cuatro metros",
-            "Cinco metros",
+            "Recuerda: la mediana une un vértice con el punto medio del lado opuesto. "
+            "Si una mediana llega a un lado que mide ocho metros, "
+            "¿en cuánto divide ese lado?",
+            "En dos partes de cuatro metros",
+            "En dos partes de cinco metros",
             True,
         ),
         (
-            "Recuerda: el punto donde se cruzan las alturas se llama ortocentro. "
-            "¿Cómo se llama este punto?",
+            "Recuerda: el punto donde se cruzan las medianas de un triángulo "
+            "se llama baricentro. ¿Cómo se llama este punto?",
+            "Baricentro",
+            "Ortocentro",
+            True,
+        ),
+        (
+            "Recuerda: el punto donde se cruzan las alturas de un triángulo "
+            "se llama ortocentro. ¿Cómo se llama este punto?",
             "Ortocentro",
             "Baricentro",
             True,
         ),
         (
-            "Recuerda: el punto donde se cruzan las bisectrices se llama incentro. "
-            "¿Cómo se llama este punto?",
+            "Recuerda: el punto donde se cruzan las bisectrices de un triángulo "
+            "se llama incentro. ¿Cómo se llama este punto?",
             "Incentro",
             "Circuncentro",
             True,
         ),
         (
-            "Recuerda: el circuncentro es el punto donde se cruzan las mediatrices. "
-            "¿Qué líneas se cruzan en el circuncentro?",
-            "Mediatrices",
-            "Medianas",
+            "Recuerda: el circuncentro es el punto donde se cruzan las mediatrices "
+            "de un triángulo. ¿Qué líneas se cruzan en el circuncentro?",
+            "Las mediatrices",
+            "Las medianas",
+            True,
+        ),
+        (
+            "Recuerda: el baricentro se forma por la intersección de las medianas. "
+            "¿Qué líneas debemos trazar para encontrar el baricentro?",
+            "Las medianas",
+            "Las alturas",
+            True,
+        ),
+        (
+            "Recuerda: el ortocentro se obtiene al cruzar las alturas de un triángulo. "
+            "¿Qué líneas debemos trazar para encontrar el ortocentro?",
+            "Las alturas",
+            "Las bisectrices",
+            True,
+        ),
+        (
+            "Recuerda: el incentro se obtiene al cruzar las bisectrices de los ángulos "
+            "del triángulo. ¿Qué líneas debemos trazar para encontrar el incentro?",
+            "Las bisectrices",
+            "Las mediatrices",
             True,
         ),
     ]

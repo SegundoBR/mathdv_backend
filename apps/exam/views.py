@@ -179,79 +179,30 @@ class RecommendedActivitiesView(APIView):
     permission_classes = [IsExamAuthenticated]
 
     def get(self, request):
-        user = request.user
-        
-        logger.info(f"============ INICIO DE PROCESAMIENTO LINUCB ============")
-        logger.info(f"Usuario evaluado: {user.email} (ID: {user.id})")
-        
-        # 1. Extraer vector de contexto del alumno
-        user_features = DiagnosticFeatureExtractor.get_user_diagnostic_features(user)
-        
-        # Formatear el vector para que sea fácil de leer en los logs de Render
-        user_vector_str = [f"{val:.2f}" for val in user_features]
-        logger.info(f"--> [CONTEXTO ESTUDIANTE] Vector x_t (d=5): {user_vector_str}")
-        logger.info(f"    [Detalle] Global: {user_vector_str[0]} | Ratio Debiles: {user_vector_str[1]} | Cognitivo: {user_vector_str[2]} | Procedimental: {user_vector_str[3]} | Patron Dificultad: {user_vector_str[4]}")
-        
-        # Verificar si tiene el diagnóstico completo
-        diagnostic_exists = UserExamAttempt.objects.filter(
-            user=user,
-            attempt_type=UserExamAttempt.AttemptType.DIAGNOSTIC,
-            is_completed=True
-        ).exists()
-        
-        if not diagnostic_exists:
-            logger.warning(f"⚠️ El usuario {user.email} no cuenta con un examen diagnóstico completado. Retornando lista vacía.")
-            logger.info(f"============ FIN DE PROCESAMIENTO LINUCB ============")
-            return Response({"exams": []})
-            
-        # 2. Obtener exámenes candidatos
-        candidate_exams = Exam.objects.filter(is_active=True).select_related('topic')
-        logger.info(f"Total de actividades candidatas encontradas en Supabase: {candidate_exams.count()}")
-        
+        # Obtener recomendaciones desde services.py
+        recommendations = generate_exam_recommendations(
+            user=request.user
+        )
+
         data = []
-        alpha = 0.2  # Hiperparámetro de exploración
-        
-        logger.info(f"--- Evaluación de Límite Superior de Confianza (UCB) ---")
-        
-        for exam in candidate_exams:
-            # 3. Extraer características de la actividad
-            activity_features = ActivityFeatureExtractor.get_activity_features(exam)
-            act_vector_str = [f"{val:.2f}" for val in activity_features]
-            
-            # 4. Cálculos matemáticos del LinUCB
-            estimated_reward = float(np.dot(user_features, activity_features))
-            uncertainty = float(alpha * np.sqrt(np.sum(np.square(activity_features))))
-            linucb_score = estimated_reward + uncertainty
-            
-            # Formatear datos para la respuesta del celular
-            confidence = round(float(np.clip(linucb_score / 2.0, 0.50, 0.99)), 2)
-            score_basis = round((1.0 - estimated_reward) * 100, 1)
-            
-            # Imprimir en el log el desglose de la decisión por cada examen
-            logger.info(
-                f"Actividad: '{exam.title}' | Tema: {exam.topic.name if exam.topic else 'Ninguno'} \n"
-                f"    -> Vector Actividad: {act_vector_str} (Dif: {act_vector_str[0]}, Cogn: {act_vector_str[1]}, Proc: {act_vector_str[2]}) \n"
-                f"    -> [LinUCB Matemático] Explotación (Predicción): {estimated_reward:.4f} + Exploración (Incertidumbre): {uncertainty:.4f} = Score Total: {linucb_score:.4f} (Confianza guardada: {confidence})"
-            )
-            
+
+        for recommendation in recommendations:
+            exam = recommendation.recommended_exam
+
             data.append({
-                "id": exam.id,
+                "id": str(exam.id),
                 "title": exam.title,
                 "description": exam.description,
                 "difficulty": exam.difficulty,
-                "topic_name": exam.topic.name if exam.topic else "",
-                "confidence": confidence,
-                "score_basis": score_basis,
-                "reason": f"Prioridad adaptativa LinUCB para nivel {exam.difficulty} ({exam.competency_type})",
+                "topic_name": (
+                    exam.topic.name if exam.topic else ""
+                ),
+                "confidence": recommendation.confidence,
+                "score_basis": recommendation.score_basis,
+                "reason": recommendation.reason,
             })
-            
-        # 5. Ordenar las actividades tal y como lo exige el criterio del bandido contextual
-        data_sorted = sorted(data, key=lambda r: (-r["confidence"], r["score_basis"]))
-        
-        logger.info(f"--- Ranking Final de Recomendaciones Asignadas ---")
-        for rank, item in enumerate(data_sorted[:3], start=1):
-            logger.info(f"   Top {rank}: {item['title']} (Score de Confianza: {item['confidence']})")
-            
-        logger.info(f"============ FIN DE PROCESAMIENTO LINUCB ============")
-        
-        return Response({"exams": data_sorted})
+
+        return Response(
+            {"exams": data},
+            status=status.HTTP_200_OK
+        )

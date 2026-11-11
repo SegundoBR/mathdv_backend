@@ -9,6 +9,8 @@ User = get_user_model()
 
 class DiagnosticFeatureExtractor:
     """Extrae features del usuario desde su examen diagnóstico."""
+
+    
     
     @staticmethod
     def get_user_diagnostic_features(user: Any) -> np.ndarray:
@@ -112,6 +114,53 @@ class DiagnosticFeatureExtractor:
         
         return min(1.0, max(0.0, hard_pct - easy_pct + 0.5))
 
+    @staticmethod
+    def get_competency_results(diagnostic):
+        """
+        Calcula resultados cognitivos y procedimentales
+        a partir de las respuestas del diagnóstico.
+        """
+ 
+        answers = diagnostic.answers.select_related(
+            "question__exam"
+        )
+
+        results = {
+            "COGNITIVE": {
+                "correct": 0,
+                "total": 0,
+                "percentage": 0.0,
+            },
+            "PROCEDURAL": {
+                "correct": 0,
+                "total": 0,
+                "percentage": 0.0,
+            },
+        }
+
+        for answer in answers:
+
+            competency = answer.question.exam.competency_type
+
+            if competency not in results:
+                continue
+
+            results[competency]["total"] += 1
+
+            if answer.is_correct:
+                results[competency]["correct"] += 1
+
+        for competency, data in results.items():
+
+            if data["total"] > 0:
+                data["percentage"] = round(
+                    data["correct"] / data["total"] * 100,
+                    2
+                )
+
+        return results
+
+
 class ActivityFeatureExtractor:
     """Extrae features de una actividad (Examen)."""
     
@@ -163,3 +212,20 @@ class ActivityFeatureExtractor:
         ], dtype=np.float32)
         
         return np.clip(features, 0, 1)
+
+    
+    @staticmethod
+    def get_reinforcement_need(exam, competency_results):
+        """
+        Calcula la necesidad de reforzamiento
+        según la capacidad del examen.
+        """
+
+        competency = exam.competency_type
+
+        result = competency_results.get(competency)
+
+        if not result or result["total"] == 0:
+            return 0.0
+
+        return 1.0 - (result["percentage"] / 100.0)
