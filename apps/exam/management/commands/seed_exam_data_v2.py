@@ -162,7 +162,7 @@ class Command(BaseCommand):
                 exam = exams[str(spec["title"])]
                 generator = spec["generator"]
 
-                question_items = generator()[:DIAGNOSTIC_QUESTIONS_PER_TOPIC]
+                question_items = generator()[:self.DIAGNOSTIC_QUESTIONS_PER_TOPIC]
 
                 for idx, item in enumerate(question_items, start=1):
                     question_text, left_label, right_label, is_left_correct = item
