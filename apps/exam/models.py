@@ -57,7 +57,11 @@ class Exam(models.Model):
 
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="questions")
+    exam = models.ForeignKey(
+        Exam,
+        on_delete=models.CASCADE,
+        related_name="questions",
+    )
     title = models.CharField(max_length=200)
     question_text = models.TextField()
     spoken_instruction = models.TextField()
@@ -76,7 +80,13 @@ class Question(models.Model):
         ]
 
     def __str__(self) -> str:
-        return f"{self.title} - {self.exam.title}"
+        exam_title = (
+            self.exam.title
+            if self.exam
+            else "Diagnóstico mixto"
+        )
+
+        return f"Attempt {self.id} - {self.user} - {exam_title}"
 
 
 class QuestionOption(models.Model):
@@ -130,7 +140,13 @@ class UserExamAttempt(models.Model):
         REINFORCEMENT = "REINFORCEMENT", "Reforzamiento"
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name="attempts")
+    exam = models.ForeignKey(
+        Exam,
+        on_delete=models.SET_NULL,
+        related_name="attempts",
+        null=True,
+        blank=True,
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
