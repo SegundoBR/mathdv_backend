@@ -24,6 +24,9 @@ from .selectors import (
 
 User = get_user_model()
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SubmitAnswerResult(TypedDict):
     is_correct: bool
@@ -182,6 +185,7 @@ class BatchResult(TypedDict):
     percentage: float
 
 
+
 @transaction.atomic
 def submit_batch_answers(
     *,
@@ -189,131 +193,168 @@ def submit_batch_answers(
     exam_id,
     answers: list[dict],
 ) -> BatchResult:
+
     if not answers:
-        raise ValidationError({"answers": "Debe enviar al menos una respuesta."})
+        raise ValidationError({
+            "answers": "Debe enviar al menos una respuesta."
+        })
 
-    requested_exam = None
     is_reinforcement = exam_id is not None
-    if exam_id is not None:
-        requested_exam = Exam.objects.filter(id=exam_id, is_active=True).first()
-        if requested_exam is None:
-            raise ValidationError({"exam_id": "El examen no existe o está inactivo."})
+    requested_exam = None
 
-    # Pre-fetch referenced questions and options in two bulk queries.
-    question_ids = [a["question_id"] for a in answers]
-    option_ids = [a["selected_option_id"] for a in answers]
+    if is_reinforcement:
+        requested_exam = Exam.objects.filter(
+            id=exam_id,
+            is_active=True,
+            is_diagnostic=False,
+        ).first()
+
+        if requested_exam is None:
+            raise ValidationError({
+                "exam_id": "Examen de reforzamiento inválido."
+            })
+
+    question_ids = [
+        item["question_id"] for item in answers
+    ]
+    option_ids = [
+        item["selected_option_id"] for item in answers
+    ]
+
+    logger.info(
+        "[DIAGNOSTIC] Usuario=%s | Preguntas recibidas=%s | exam_id=%s",
+        user.id,
+        len(answers),
+        exam_id,
+    )
+
+    if len(question_ids) != len(set(question_ids)):
+        raise ValidationError({
+            "answers": "Existen preguntas repetidas."
+        })
 
     questions_map = {
-        q.id: q
-        for q in Question.objects.select_related("exam").filter(
+        question.id: question
+        for question in Question.objects.select_related(
+            "exam"
+        ).filter(
             id__in=question_ids,
             is_active=True,
             exam__is_active=True,
         )
     }
-    options_map = {o.id: o for o in QuestionOption.objects.filter(id__in=option_ids)}
 
-    resolved_exam = requested_exam
-    if resolved_exam is None:
-        for item in answers:
-            question = questions_map.get(item["question_id"])
-            if question is not None and question.exam is not None:
-                resolved_exam = question.exam
-                break
-
-    if resolved_exam is None:
-        raise ValidationError(
-            {"exam_id": "No se pudo inferir el examen para las respuestas enviadas."}
+    options_map = {
+        option.id: option
+        for option in QuestionOption.objects.filter(
+            id__in=option_ids
         )
+    }
 
-    # Keep compatibility but isolate attempt by exam.
-    UserExamAttempt.objects.filter(
-        user=user,
-        exam=resolved_exam,
-        is_completed=False,
-    ).delete()
+    validated_answers = []
 
-    total_questions = Question.objects.filter(
-        exam=resolved_exam,
-        is_active=True,
-    ).count()
+    for item in answers:
+        question = questions_map.get(item["question_id"])
+        option = options_map.get(item["selected_option_id"])
 
+        if question is None:
+            raise ValidationError({
+                "question_id": "Pregunta inválida."
+            })
+
+        if option is None:
+            raise ValidationError({
+                "selected_option_id": "Opción inválida."
+            })
+
+        if option.question_id != question.id:
+            raise ValidationError({
+                "selected_option_id":
+                    "La opción no pertenece a la pregunta."
+            })
+
+        if is_reinforcement:
+            if question.exam_id != requested_exam.id:
+                raise ValidationError({
+                    "exam_id":
+                        "La pregunta no pertenece al reforzamiento."
+                })
+        else:
+            if not question.exam.is_diagnostic:
+                raise ValidationError({
+                    "question_id":
+                        "La pregunta no pertenece al diagnóstico."
+                })
+
+        validated_answers.append((question, option))
+
+    total_questions = len(validated_answers)
+
+    logger.info(
+        "[DIAGNOSTIC] Intento=%s | Puntaje=%s/%s",
+        attempt.id,
+        attempt.score,
+        attempt.total_questions,
+    )
+
+    # Un solo intento para todo el diagnóstico mixto
     attempt = UserExamAttempt.objects.create(
         user=user,
-        exam=resolved_exam,
+        exam=requested_exam if is_reinforcement else None,
         attempt_type=(
             UserExamAttempt.AttemptType.REINFORCEMENT
             if is_reinforcement
             else UserExamAttempt.AttemptType.DIAGNOSTIC
         ),
         title=(
-            f"Reforzamiento: {resolved_exam.title}"
+            f"Reforzamiento: {requested_exam.title}"
             if is_reinforcement
             else "Examen diagnóstico"
         ),
         total_questions=total_questions,
     )
 
-    to_create = []
     score = 0
-    seen_questions = set()
+    answer_objects = []
 
-    for item in answers:
-        question = questions_map.get(item["question_id"])
-        selected_option = options_map.get(item["selected_option_id"])
-
-        if question is None:
-            raise ValidationError(
-                {"question_id": "Una pregunta no existe o está inactiva."}
-            )
-        if selected_option is None:
-            raise ValidationError(
-                {"selected_option_id": "Una opción seleccionada no existe."}
-            )
-        if question.exam_id != resolved_exam.id:
-            raise ValidationError(
-                {
-                    "exam_id": "Todas las preguntas del lote deben pertenecer al mismo examen."
-                }
-            )
-        if question.id in seen_questions:
-            raise ValidationError(
-                {"question_id": "Hay preguntas repetidas en el lote."}
-            )
-        seen_questions.add(question.id)
-        if selected_option.question_id != question.id:
-            raise ValidationError(
-                {
-                    "selected_option_id": "La opción seleccionada no pertenece a la pregunta indicada."
-                }
-            )
-
-        is_correct = selected_option.is_correct
-        if is_correct:
+    for question, option in validated_answers:
+        if option.is_correct:
             score += 1
 
-        to_create.append(
+        answer_objects.append(
             UserAnswer(
                 attempt=attempt,
                 question=question,
-                selected_option=selected_option,
-                is_correct=is_correct,
+                selected_option=option,
+                is_correct=option.is_correct,
             )
         )
 
-    UserAnswer.objects.bulk_create(to_create, ignore_conflicts=True)
+    UserAnswer.objects.bulk_create(answer_objects)
 
     attempt.score = score
     attempt.is_completed = True
     attempt.completed_at = timezone.now()
-    attempt.save(update_fields=["score", "is_completed", "completed_at"])
-    percentage = round((score / total_questions) * 100, 1) if total_questions else 0.0
+
+    attempt.save(
+        update_fields=[
+            "score",
+            "is_completed",
+            "completed_at",
+        ]
+    )
+
+    percentage = round(
+        (score / total_questions) * 100,
+        1
+    ) if total_questions else 0.0
 
     return {
         "score": score,
         "total_questions": total_questions,
         "percentage": percentage,
     }
+
 
 
 def generate_exam_recommendations(*, user: User) -> list[ExamRecommendation]:
